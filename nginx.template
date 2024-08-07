@@ -9,7 +9,7 @@ http {
 
     server {
         listen 80;
-        server_name ${DOMAIN};
+        server_name archive-paul.serveblog.net;
 
         location /.well-known/acme-challenge/ {
             root /var/www/certbot;
@@ -22,10 +22,10 @@ http {
 
     server {
         listen 443 ssl;
-        server_name ${DOMAIN};
+        server_name archive-paul.serveblog.net;
 
-        ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/archive-paul.serveblog.net/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/archive-paul.serveblog.net/privkey.pem;
 
         location / {
             proxy_pass http://wordpress;

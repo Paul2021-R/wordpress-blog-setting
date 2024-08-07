@@ -33,15 +33,18 @@ services:
       - ./data/certbot/www:/var/www/certbot
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/wordpress:/var/www/html
+    environment:
+      - domain=archive-paul.serveblog.net
     depends_on:
       - wordpress
+    command: "/bin/sh -c 'while :; do sleep 12d & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
   certbot:
     image: certbot/certbot
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
-    command: certonly --webroot --webroot-path /var/www/certbot --email ${EMAIL} -d ${DOMAIN} --agree-tos --no-eff-email --force-renewal
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12d & wait $${!}; done;'"
 
 volumes:
   mysql_data:
